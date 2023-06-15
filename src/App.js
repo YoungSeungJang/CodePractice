@@ -28,22 +28,28 @@ function App() {
       <button onClick={() => navigateTo('home')}>HOME</button>
       <button onClick={() => navigateTo('about')}>ABOUT</button>
   */
+	//  현재주소를 저장할 state
 	const [currentPage, setCurrentPage] = useState(window.location.hash.slice(1));
+	// query param을 받기위한 state
 	const [params, setParams] = useState({});
 
 	useEffect(() => {
+		// 현재주소값과 param을 각 currentPage와 param에 set해주는 역할
 		const handleHashChange = () => {
 			const hash = window.location.hash.slice(1);
 			setCurrentPage(hash);
 			setParams(parseHashParams(hash));
 		};
+		// 해쉬값이 바뀔때마다 감지하는 이벤트를 등록
 		window.addEventListener('hashchange', handleHashChange);
 
+		// 언마운트시 이벤트삭제
 		return () => {
 			window.removeEventListener('hashchange', handleHashChange);
 		};
 	}, []);
 
+	// 해쉬를 제외한 param을 구현할때 param값을 추출하기위한 함수
 	const parseHashParams = hash => {
 		const params = {};
 		const paramStrings = hash.split('/');
@@ -52,7 +58,6 @@ function App() {
 		const value = paramStrings[1];
 		params[key] = value;
 
-		console.log(params);
 		return params;
 	};
 
